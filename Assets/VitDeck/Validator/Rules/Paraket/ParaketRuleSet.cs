@@ -1,5 +1,6 @@
 // 当ファイルは Assets/VitDeck/Validator/Rules/Vket/VketRuleSetBase.cs、および ConceptWorldRuleSet.cs をコピーして改変したもの
 
+using System.Linq;
 using UnityEngine;
 using VitDeck.Language;
 
@@ -61,9 +62,8 @@ namespace VitDeck.Validator
                 //Vket B-3 パスの長さ制限
                 new AssetPathLengthRule(LocalizedMessage.Get("VketRuleSetBase.FilePathLengthLimitRule.Title", 184), 184),
                 // B-4a 拡張子制限
-                new AssetExtentionBlacklistRule(LocalizedMessage.Get("VketRuleSetBase.MeshFileTypeBlacklistRule.Title"),
-                                                new string[]{".ma", ".mb", "max", "c4d", ".blend"}
-                ),
+                new AllowedExtensionsForExportRule(LocalizedMessage.Get("AllowedExtensionsForExportRule.Title"),
+                    Exporter.Exporter.GetExportSettings().First(setting => setting.name == "ParaketExportSetting")),
                 // B-4b MaterialとTextureの検証
                 new ContainMatOrTexInAssetRule(LocalizedMessage.Get("VketRuleSetBase.ContainMatOrTexInAssetRule.Title")),
                 // B-2 Unitypackageのサイズ制限
