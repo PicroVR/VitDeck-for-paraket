@@ -89,6 +89,8 @@ namespace VitDeck.Validator
                     lightmapResolutionLimit: 512),
                 // E-1 Bakedのみ許可
                 new GlobalIlluminationBakedRule(LocalizedMessage.Get("VketRuleSetBase.GlobalIlluminationBakedRule.Title")),
+                // F Scene階層
+                new SceneStructureRule("シーン構造ルール"),
                 // G 使用可能Component 後述
                 new UsableComponentListRule(LocalizedMessage.Get("VketRuleSetBase.UsableComponentListRule.Title"),
                     GetComponentReferences(),
