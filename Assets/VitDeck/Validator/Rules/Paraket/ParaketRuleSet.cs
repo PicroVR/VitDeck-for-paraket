@@ -1,6 +1,7 @@
 // 当ファイルは Assets/VitDeck/Validator/Rules/Vket/VketRuleSetBase.cs、および ConceptWorldRuleSet.cs をコピーして改変したもの
 
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using VitDeck.Language;
 
@@ -54,6 +55,12 @@ namespace VitDeck.Validator
                     new VRCSDKVersion("2021.06.03.14.57"),
                     "https://files.vrchat.cloud/sdk/VRCSDK2-2020.09.15.11.25_Public.unitypackage"),
                 // B-1 入稿データチェック
+                new BaseFolderPathRule(
+                    "ベースフォルダパスルール",
+                    new Regex("^Assets/[1-9][0-9]{2}$"),
+                    "Base Folderは、入稿ツールによってAssets直下へ作成された、半角数字3桁のサークルIDのフォルダです。なお、サークルIDは、右のHelpボタンから飛べるスプレッドシートで確認できます。",
+                    "https://docs.google.com/spreadsheets/d/1mFXJrAYP7mjRsacWKFE9j7ROtOYfPWMIP98rzsyIX7E/htmlview"
+                ),
                 new ExistInSubmitFolderRule(LocalizedMessage.Get("VketRuleSetBase.ExistInSubmitFolderRule.Title"), VketOfficialAssetData.GUIDs, targetFinder),
                 //Blacklist
                 new AssetGuidBlacklistRule(LocalizedMessage.Get("VketRuleSetBase.OfficialAssetDontContainRule.Title"), VketOfficialAssetData.GUIDs),
