@@ -54,6 +54,8 @@ namespace VitDeck.Validator
                 new VRCSDKVersionRule(LocalizedMessage.Get("VketRuleSetBase.VRCSDKVersionRule.Title"),
                     new VRCSDKVersion("2021.06.03.14.57"),
                     "https://files.vrchat.cloud/sdk/VRCSDK2-2020.09.15.11.25_Public.unitypackage"),
+                // A-3 VitDeckバージョン制限
+                new VitDeckVersionRule("VitDeckバージョンルール"),
                 // B-1 入稿データチェック
                 new BaseFolderPathRule(
                     "ベースフォルダパスルール",
