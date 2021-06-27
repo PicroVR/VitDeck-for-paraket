@@ -24,15 +24,6 @@ namespace VitDeck.Validator
         private readonly VketTargetFinder targetFinder = new VketTargetFinder();
         public IValidationTargetFinder TargetFinder => targetFinder;
 
-        private readonly IObjectDetector officialPrefabsDetector = new PrefabPartsDetector(
-            VketOfficialAssetData.AudioSourcePrefabGUIDs,
-            VketOfficialAssetData.AvatarPedestalPrefabGUIDs,
-            VketOfficialAssetData.ChairPrefabGUIDs,
-            VketOfficialAssetData.PickupObjectSyncPrefabGUIDs,
-            VketOfficialAssetData.CanvasPrefabGUIDs,
-            VketOfficialAssetData.PointLightProbeGUIDs
-        );
-
         public IRule[] GetRules()
         {
             // デフォルトで使っていたAttribute式は宣言時にconst以外のメンバーが利用できない。
@@ -65,9 +56,9 @@ namespace VitDeck.Validator
                     "https://docs.google.com/spreadsheets/d/1mFXJrAYP7mjRsacWKFE9j7ROtOYfPWMIP98rzsyIX7E/htmlview"
                 ),
                 // (公式プレハブ等を除き、入稿フォルダ外を参照していないことの確認)
-                new ExistInSubmitFolderRule(LocalizedMessage.Get("VketRuleSetBase.ExistInSubmitFolderRule.Title"), VketOfficialAssetData.GUIDs, targetFinder),
+                new ExistInSubmitFolderRule(LocalizedMessage.Get("VketRuleSetBase.ExistInSubmitFolderRule.Title"), ParaketOfficialAssetData.GUIDs, targetFinder),
                 // (公式プレハブ等を入稿データに入れない)
-                new AssetGuidBlacklistRule(LocalizedMessage.Get("VketRuleSetBase.OfficialAssetDontContainRule.Title"), VketOfficialAssetData.GUIDs),
+                new AssetGuidBlacklistRule(LocalizedMessage.Get("VketRuleSetBase.OfficialAssetDontContainRule.Title"), ParaketOfficialAssetData.GUIDs),
                 // B-2 Unitypackageの容量制限
                 new FolderSizeRule(LocalizedMessage.Get("VketRuleSetBase.FolderSizeRule.Title"), (long)(50 * Math.Pow(2, 20))), // 50MiB
                 // B-3 命名規則
@@ -98,7 +89,7 @@ namespace VitDeck.Validator
                     LocalizedMessage.Get("VketRuleSetBase.MaterialLimitRule.Title", 20),
                     typeof(Material),
                     limit: 20,
-                    VketOfficialAssetData.MaterialGUIDs
+                    ParaketOfficialAssetData.GUIDs
                 ),
                 // D-5 ライトマップ制限
                 new LightmapSizeLimitRule(
@@ -176,19 +167,19 @@ namespace VitDeck.Validator
                 new UsableComponentListRule(
                     LocalizedMessage.Get("VketRuleSetBase.UsableComponentListRule.Title"),
                     GetComponentReferences(),
-                    ignorePrefabGUIDs: VketOfficialAssetData.GUIDs,
+                    ignorePrefabGUIDs: ParaketOfficialAssetData.OfficialPrefabs,
                     unregisteredComponent: ValidationLevel.DISALLOW
                 ),
                 // AvatarPedestal - 制限
-                new AvatarPedestalPrefabRule(LocalizedMessage.Get("VketRuleSetBase.AvatarPedestalPrefabRule.Title"), VketOfficialAssetData.AvatarPedestalPrefabGUIDs),
+                new AvatarPedestalPrefabRule(LocalizedMessage.Get("VketRuleSetBase.AvatarPedestalPrefabRule.Title"), ParaketOfficialAssetData.AvatarPedestalPrefabGUIDs),
                 // VRC_Pickup - 個数制限
                 new PrefabLimitRule(
                     LocalizedMessage.Get("VketRuleSetBase.PickupObjectSyncPrefabLimitRule.Title", 5),
-                    VketOfficialAssetData.PickupObjectSyncPrefabGUIDs,
+                    ParaketOfficialAssetData.PickupObjectSyncPrefabGUIDs,
                     limit: 5
                 ),
                 // VRC_Pickup - PickupObjectSyncRuleの制限
-                new PickupObjectSyncPrefabRule(LocalizedMessage.Get("VketRuleSetBase.PickupObjectSyncRule.Title"), VketOfficialAssetData.PickupObjectSyncPrefabGUIDs),
+                new PickupObjectSyncPrefabRule(LocalizedMessage.Get("VketRuleSetBase.PickupObjectSyncRule.Title"), ParaketOfficialAssetData.PickupObjectSyncPrefabGUIDs),
                 // VRC_Trigger - 個数制限
                 new VRCTriggerCountLimitRule(LocalizedMessage.Get("VketRuleSetBase.VRCTriggerCountLimitRule.Title", 25), 25),
                 // VRC_Trigger - 制限
@@ -226,14 +217,17 @@ namespace VitDeck.Validator
                         VRC_EventHandler.VrcEventType.SetGameObjectActive,
                         VRC_EventHandler.VrcEventType.SetParticlePlaying,
                     },
-                    VketOfficialAssetData.GUIDs
+                    excludedAssetGUIDs: ParaketOfficialAssetData.OfficialPrefabs
                 ),
                 // Animator / Animation - 個数制限
                 new AnimatorComponentMaxCountRule(LocalizedMessage.Get("VketRuleSetBase.AnimatorComponentMaxCountRule.Title"), limit: 50),
                 // Animator Animation - Material変更制限 Path制限
                 new AnimationClipRule(LocalizedMessage.Get("VketRuleSetBase.AnimationClipRule.Title")),
                 // Animator / Animation - Alwaysの禁止
-                new AnimationComponentRule(LocalizedMessage.Get("VketRuleSetBase.AnimationComponentRule.Title"), officialPrefabsDetector),
+                new AnimationComponentRule(
+                    LocalizedMessage.Get("VketRuleSetBase.AnimationComponentRule.Title"),
+                    ignoredPrefabDetector: new PrefabPartsDetector(ParaketOfficialAssetData.OfficialPrefabs)
+                ),
                 // Animator / Animation - コライダーを動かす場合はRigidbodyを付加する
                 new AnimationMakesMoveCollidersRule(LocalizedMessage.Get("VketRuleSetBase.AnimationMakesMoveCollidersRule.Title")),
                 // Animator / Animation - VRC_Pickup、VRC_ObjectSyncとAnimatorの併用は禁止
@@ -243,7 +237,7 @@ namespace VitDeck.Validator
                         typeof(VRC_Pickup),
                         typeof(VRC_ObjectSync),
                     },
-                    ignoredPrefabDetector: officialPrefabsDetector
+                    ignoredPrefabDetector: new PrefabPartsDetector(ParaketOfficialAssetData.OfficialPrefabs)
                 ),
                 // SkinnedMeshRenderer - Update When Offscreenはオフ / マテリアル1以上
                 new SkinnedMeshRendererRule(LocalizedMessage.Get("VketRuleSetBase.SkinnedMeshRendererRule.Title")),
@@ -254,11 +248,11 @@ namespace VitDeck.Validator
                 // VRC_Chair - 個数制限
                 new PrefabLimitRule(
                     LocalizedMessage.Get("VketRuleSetBase.ChairPrefabLimitRule.Title", 1),
-                    VketOfficialAssetData.ChairPrefabGUIDs,
+                    ParaketOfficialAssetData.ChairPrefabGUIDs,
                     limit: 1
                 ),
                 // AudioSource - 制限
-                new AudioSourcePrefabRule(LocalizedMessage.Get("VketRuleSetBase.AudioSourcePrefabRule.Title"), VketOfficialAssetData.AudioSourcePrefabGUIDs),
+                new AudioSourcePrefabRule(LocalizedMessage.Get("VketRuleSetBase.AudioSourcePrefabRule.Title"), ParaketOfficialAssetData.AudioSourcePrefabGUIDs),
 #endif
             };
         }
