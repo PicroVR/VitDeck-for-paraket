@@ -133,7 +133,7 @@ namespace VitDeck.Validator
                     LocalizedMessage.Get("VketRuleSetBase.PointLightConfigRule.Title"),
                     LightType.Point,
                     new LightConfigRule.LightConfig(
-                        new[] { LightmapBakeType.Baked, LightmapBakeType.Realtime },
+                        new[] { LightmapBakeType.Baked },
                         0, 7,
                         0, 10,
                         0, 15
@@ -144,7 +144,7 @@ namespace VitDeck.Validator
                     LocalizedMessage.Get("VketRuleSetBase.SpotLightConfigRule.Title"),
                     LightType.Spot,
                     new LightConfigRule.LightConfig(
-                        new[] { LightmapBakeType.Baked, LightmapBakeType.Realtime },
+                        new[] { LightmapBakeType.Baked },
                         0, 7,
                         0, 10,
                         0, 15
