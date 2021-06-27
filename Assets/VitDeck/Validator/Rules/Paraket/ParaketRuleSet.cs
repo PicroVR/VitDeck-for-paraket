@@ -26,19 +26,14 @@ namespace VitDeck.Validator
         private readonly VketTargetFinder targetFinder = new VketTargetFinder();
         public IValidationTargetFinder TargetFinder => targetFinder;
 
-        private readonly IObjectDetector officialPrefabsDetector;
-
-        public ParaketRuleSet() : base()
-        {
-            officialPrefabsDetector = new PrefabPartsDetector(
-                VketOfficialAssetData.AudioSourcePrefabGUIDs,
-                VketOfficialAssetData.AvatarPedestalPrefabGUIDs,
-                VketOfficialAssetData.ChairPrefabGUIDs,
-                VketOfficialAssetData.PickupObjectSyncPrefabGUIDs,
-                VketOfficialAssetData.CanvasPrefabGUIDs
-                //VketOfficialAssetData.PointLightProbeGUIDs
-                );
-        }
+        private readonly IObjectDetector officialPrefabsDetector = new PrefabPartsDetector(
+            VketOfficialAssetData.AudioSourcePrefabGUIDs,
+            VketOfficialAssetData.AvatarPedestalPrefabGUIDs,
+            VketOfficialAssetData.ChairPrefabGUIDs,
+            VketOfficialAssetData.PickupObjectSyncPrefabGUIDs,
+            VketOfficialAssetData.CanvasPrefabGUIDs
+            //VketOfficialAssetData.PointLightProbeGUIDs
+            );
 
         public IRule[] GetRules()
         {
@@ -112,7 +107,9 @@ namespace VitDeck.Validator
                 //new ReflectionProbeRule(LocalizedMessage.Get("VketRuleSetBase.ReflectionProbeRule.Title")),
                 // G Trigger制限
                 new VRCTriggerConfigRule(LocalizedMessage.Get("VketRuleSetBase.VRCTriggerConfigRule.Title"),
-                            VRCTriggerBroadcastTypesWhitelist,
+                            new VRC_EventHandler.VrcBroadcastType[]{
+                                //ブロードキャストタイプをlocalのみに限定
+                                VRC_EventHandler.VrcBroadcastType.Local },
                             new VRC_Trigger.TriggerType[] {
                                 VRC_Trigger.TriggerType.Custom,
                                 VRC_Trigger.TriggerType.OnInteract,
@@ -122,7 +119,22 @@ namespace VitDeck.Validator
                                 VRC_Trigger.TriggerType.OnDrop,
                                 VRC_Trigger.TriggerType.OnPickupUseDown,
                                 VRC_Trigger.TriggerType.OnPickupUseUp   },
-                            VRCTriggerActionWhitelist,
+                            new VRC_EventHandler.VrcEventType[] {
+                                //使用可能Trigger
+                                VRC_EventHandler.VrcEventType.ActivateCustomTrigger,
+                                VRC_EventHandler.VrcEventType.AudioTrigger,
+                                VRC_EventHandler.VrcEventType.PlayAnimation,
+                                VRC_EventHandler.VrcEventType.SetParticlePlaying,
+                                VRC_EventHandler.VrcEventType.SetComponentActive,
+                                VRC_EventHandler.VrcEventType.SetGameObjectActive,
+                                VRC_EventHandler.VrcEventType.AnimationBool,
+                                VRC_EventHandler.VrcEventType.AnimationFloat,
+                                VRC_EventHandler.VrcEventType.AnimationInt,
+                                VRC_EventHandler.VrcEventType.AnimationIntAdd,
+                                VRC_EventHandler.VrcEventType.AnimationIntDivide,
+                                VRC_EventHandler.VrcEventType.AnimationIntMultiply,
+                                VRC_EventHandler.VrcEventType.AnimationIntSubtract,
+                                VRC_EventHandler.VrcEventType.AnimationTrigger },
                             VketOfficialAssetData.GUIDs),
                 // G MeshCollider禁止
                 new UseMeshColliderRule(LocalizedMessage.Get("VketRuleSetBase.UseMeshColliderRule.Title")),
@@ -210,52 +222,18 @@ namespace VitDeck.Validator
             };
         }
 
-#if VRC_SDK_VRCSDK2 || VRC_SDK_VRCSDK3 
-        //ブロードキャストタイプをlocalのみに限定
-        protected virtual VRC_EventHandler.VrcBroadcastType[] VRCTriggerBroadcastTypesWhitelist
-        {
-            get
-            {
-                return new VRC_EventHandler.VrcBroadcastType[]{
-                    VRC_EventHandler.VrcBroadcastType.Local };
-            }
-        }
-        //使用可能Trigger
-        protected virtual VRC_EventHandler.VrcEventType[] VRCTriggerActionWhitelist
-        {
-            get
-            {
-                return new VRC_EventHandler.VrcEventType[] {
-                    VRC_EventHandler.VrcEventType.ActivateCustomTrigger,
-                    VRC_EventHandler.VrcEventType.AudioTrigger,
-                    VRC_EventHandler.VrcEventType.PlayAnimation,
-                    VRC_EventHandler.VrcEventType.SetParticlePlaying,
-                    VRC_EventHandler.VrcEventType.SetComponentActive,
-                    VRC_EventHandler.VrcEventType.SetGameObjectActive,
-                    VRC_EventHandler.VrcEventType.AnimationBool,
-                    VRC_EventHandler.VrcEventType.AnimationFloat,
-                    VRC_EventHandler.VrcEventType.AnimationInt,
-                    VRC_EventHandler.VrcEventType.AnimationIntAdd,
-                    VRC_EventHandler.VrcEventType.AnimationIntDivide,
-                    VRC_EventHandler.VrcEventType.AnimationIntMultiply,
-                    VRC_EventHandler.VrcEventType.AnimationIntSubtract,
-                    VRC_EventHandler.VrcEventType.AnimationTrigger
-                };
-            }
-        }
-#endif
         //使用可能Component
         private ComponentReference[] GetComponentReferences()
         {
             return new ComponentReference[] {
-                new ComponentReference("VRC_Trigger", new string[]{"VRCSDK2.VRC_Trigger", "VRCSDK2.VRC_EventHandler"}, AdvancedObjectValidationLevel),
+                new ComponentReference("VRC_Trigger", new string[]{"VRCSDK2.VRC_Trigger", "VRCSDK2.VRC_EventHandler"}, ValidationLevel.ALLOW),
                 new ComponentReference("VRC_Object Sync", new string[]{"VRCSDK2.VRC_ObjectSync"}, ValidationLevel.DISALLOW),
                 new ComponentReference("VRC_Pickup", new string[]{"VRCSDK2.VRC_Pickup"}, ValidationLevel.DISALLOW),
                 new ComponentReference("VRC_Audio Bank", new string[]{"VRCSDK2.VRC_AudioBank"}, ValidationLevel.DISALLOW),
                 new ComponentReference("VRC_Avatar Pedestal", new string[]{"VRCSDK2.VRC_AvatarPedestal"}, ValidationLevel.DISALLOW),
-                new ComponentReference("VRC_Ui Shape", new string[]{"VRCSDK2.VRC_UiShape"}, AdvancedObjectValidationLevel),
+                new ComponentReference("VRC_Ui Shape", new string[]{"VRCSDK2.VRC_UiShape"}, ValidationLevel.ALLOW),
                 new ComponentReference("Rigidbody", new string[]{"UnityEngine.Rigidbody"}, ValidationLevel.ALLOW),
-                new ComponentReference("Cloth", new string[]{"UnityEngine.Cloth"}, MoreAdvancedObjectValidationLevel),
+                new ComponentReference("Cloth", new string[]{"UnityEngine.Cloth"}, ValidationLevel.DISALLOW),
                 new ComponentReference("Collider", new string[]{"UnityEngine.SphereCollider", "UnityEngine.BoxCollider", "UnityEngine.SphereCollider", "UnityEngine.CapsuleCollider", /*"UnityEngine.MeshCollider",*/ "UnityEngine.WheelCollider"}, ValidationLevel.ALLOW),
                 new ComponentReference("Dynamic Bone", new string[]{"DynamicBone"}, ValidationLevel.ALLOW),
                 new ComponentReference("Dynamic Bone Collider", new string[]{"DynamicBoneCollider"}, ValidationLevel.ALLOW),
@@ -265,19 +243,19 @@ namespace VitDeck.Validator
                 new ComponentReference("Particle System", new string[]{"UnityEngine.ParticleSystem", "UnityEngine.ParticleSystemRenderer"}, ValidationLevel.ALLOW),
                 new ComponentReference("Trail Renderer", new string[]{"UnityEngine.TrailRenderer"}, ValidationLevel.ALLOW),
                 new ComponentReference("Line Renderer", new string[]{"UnityEngine.LineRenderer"}, ValidationLevel.ALLOW),
-                new ComponentReference("Light", new string[]{"UnityEngine.Light"}, AdvancedObjectValidationLevel),
-                //new ComponentReference("LightProbeGroup", new string[]{"UnityEngine.LightProbeGroup"}, AdvancedObjectValidationLevel),
-                //new ComponentReference("ReflectionProbe", new string[]{"UnityEngine.ReflectionProbe"}, AdvancedObjectValidationLevel),
-                new ComponentReference("Camera", new string[]{"UnityEngine.Camera"}, MoreAdvancedObjectValidationLevel),
-                new ComponentReference("Projector", new string[]{"UnityEngine.Projector"}, MoreAdvancedObjectValidationLevel),
-                new ComponentReference("LookatTarget", new string[]{"UnityStandardAssets.Cameras.LookatTarget" }, MoreAdvancedObjectValidationLevel),
-                new ComponentReference("FollowTarget", new string[]{"UnityStandardAssets.Utility.FollowTarget" }, MoreAdvancedObjectValidationLevel),
-                new ComponentReference("Suspension", new string[]{"UnityStandardAssets.Vehicles.Car.Suspension" }, MoreAdvancedObjectValidationLevel),
+                new ComponentReference("Light", new string[]{"UnityEngine.Light"}, ValidationLevel.ALLOW),
+                //new ComponentReference("LightProbeGroup", new string[]{"UnityEngine.LightProbeGroup"}, ValidationLevel.ALLOW),
+                //new ComponentReference("ReflectionProbe", new string[]{"UnityEngine.ReflectionProbe"}, ValidationLevel.ALLOW),
+                new ComponentReference("Camera", new string[]{"UnityEngine.Camera"}, ValidationLevel.DISALLOW),
+                new ComponentReference("Projector", new string[]{"UnityEngine.Projector"}, ValidationLevel.DISALLOW),
+                new ComponentReference("LookatTarget", new string[]{"UnityStandardAssets.Cameras.LookatTarget" }, ValidationLevel.DISALLOW),
+                new ComponentReference("FollowTarget", new string[]{"UnityStandardAssets.Utility.FollowTarget" }, ValidationLevel.DISALLOW),
+                new ComponentReference("Suspension", new string[]{"UnityStandardAssets.Vehicles.Car.Suspension" }, ValidationLevel.DISALLOW),
                 new ComponentReference("Animator", new string[]{"UnityEngine.Animator"}, ValidationLevel.ALLOW),
                 new ComponentReference("Animation", new string[]{"UnityEngine.Animation"}, ValidationLevel.ALLOW),
                 new ComponentReference("Audio Source", new string[]{"UnityEngine.AudioSource", "ONSPAudioSource", "VRCSDK2.VRC_SpatialAudioSource"}, ValidationLevel.DISALLOW),
                 new ComponentReference("Canvas", new string[]{"UnityEngine.Canvas", "UnityEngine.CanvasGroup", "UnityEngine.RectTransform", "UnityEngine.UI.CanvasScaler", "UnityEngine.UI.GraphicRaycaster", "UnityEngine.UI.AspectRatioFitter", "UnityEngine.UI.LayoutElement", "UnityEngine.UI.ContentSizeFitter", "UnityEngine.UI.HorizontalLayoutGroup", "UnityEngine.UI.VerticalLayoutGroup", "UnityEngine.UI.GridLayoutGroup", "UnityEngine.UI.Text", "UnityEngine.UI.Image", "UnityEngine.UI.RawImage", "UnityEngine.UI.Mask", "UnityEngine.UI.RectMask2D", "UnityEngine.UI.Button", "UnityEngine.UI.InputField", "UnityEngine.UI.Toggle", "UnityEngine.UI.ToggleGroup", "UnityEngine.UI.Slider", "UnityEngine.UI.Scrollbar", "UnityEngine.UI.Dropdown", "UnityEngine.UI.ScrollRect", "UnityEngine.UI.Selectable", "UnityEngine.UI.Shadow", "UnityEngine.UI.Outline", "UnityEngine.UI.PositionAsUV1", "UnityEngine.RectTransform", "UnityEngine.CanvasRenderer"}, ValidationLevel.ALLOW),
-                new ComponentReference("VideoPlayer", new string[]{"UnityEngine.Video.VideoPlayer" }, MoreAdvancedObjectValidationLevel),
+                new ComponentReference("VideoPlayer", new string[]{"UnityEngine.Video.VideoPlayer" }, ValidationLevel.DISALLOW),
                 new ComponentReference("VRC_Station", new string[]{"VRCSDK2.VRC_Station"}, ValidationLevel.DISALLOW),
                 new ComponentReference("VRC_Mirror", new string[]{ "VRCSDK2.VRC_MirrorCamera", "VRCSDK2.VRC_MirrorReflection" }, ValidationLevel.DISALLOW),
                 new ComponentReference("VRC_PlayerAudioOverride", new string[]{"VRCSDK2.VRC_PlayerAudioOverride"}, ValidationLevel.DISALLOW),
@@ -288,22 +266,6 @@ namespace VitDeck.Validator
                 new ComponentReference("VRC_Panorama", new string[]{"VRCSDK2.scripts.Scenes.VRC_Panorama" }, ValidationLevel.DISALLOW),
                 new ComponentReference("VRC_SyncVideoPlayer", new string[]{"VRCSDK2.VRC_SyncVideoPlayer", "VRCSDK2.VRC_SyncVideoStream" }, ValidationLevel.DISALLOW),
             };
-        }
-
-        protected virtual ValidationLevel AdvancedObjectValidationLevel
-        {
-            get
-            {
-                return ValidationLevel.ALLOW;
-            }
-        }
-
-        protected virtual ValidationLevel MoreAdvancedObjectValidationLevel
-        {
-            get
-            {
-                return ValidationLevel.DISALLOW;
-            }
         }
     }
 }
