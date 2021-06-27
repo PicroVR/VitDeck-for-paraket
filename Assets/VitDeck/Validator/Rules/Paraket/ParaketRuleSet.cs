@@ -285,6 +285,7 @@ namespace VitDeck.Validator
                 new ComponentReference("Line Renderer", new string[]{"UnityEngine.LineRenderer"}, ValidationLevel.ALLOW),
                 new ComponentReference("Dynamic Bone", new string[]{"DynamicBone"}, ValidationLevel.ALLOW),
                 new ComponentReference("Dynamic Bone Collider", new string[]{"DynamicBoneCollider"}, ValidationLevel.ALLOW),
+                new ComponentReference("TextMesh Pro", new string[]{"TMPro.TMP_Dropdown", "TMPro.TMP_InputField", "TMPro.TMP_ScrollbarEventHandler", "TMPro.TMP_SelectionCaret", "TMPro.TMP_SpriteAnimator", "TMPro.TMP_SubMesh", "TMPro.TMP_SubMeshUI", "TMPro.TMP_Text", "TMPro.TextMeshPro", "TMPro.TextMeshProUGUI", "TMPro.TextContainer", "TMPro.TMP_Dropdown+DropdownItem"}, ValidationLevel.ALLOW),
             };
         }
     }
