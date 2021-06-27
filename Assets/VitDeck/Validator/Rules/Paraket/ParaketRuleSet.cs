@@ -247,8 +247,6 @@ namespace VitDeck.Validator
                 ),
                 // SkinnedMeshRenderer - Update When Offscreenはオフ / マテリアル1以上
                 new SkinnedMeshRendererRule(LocalizedMessage.Get("VketRuleSetBase.SkinnedMeshRendererRule.Title")),
-                // MeshRenderer - Lightmap Staticの場合、LayerはEnvironment
-                new MeshRendererRule(LocalizedMessage.Get("VketRuleSetBase.MeshRendererRule.Title")),
                 // Rigidbody
                 new RigidbodyRule(LocalizedMessage.Get("VketRuleSetBase.RigidbodyRule.Title")),
                 // Canvas - RenderModeはWorldSpaceのみ
