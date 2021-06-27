@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
+using UnityEngine;
 using UnityEditor;
 using VitDeck.Utilities;
 
@@ -15,8 +16,6 @@ namespace VitDeck.Main
     {
         private static readonly string DestinationFolderPath
             = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-
-        private static readonly string RootPath = "Assets/VitDeck";
 
         private static readonly Regex IgnorePattern = new Regex(@"^Assets/VitDeck/(
             Main/ToolExporter\.cs
@@ -35,19 +34,37 @@ namespace VitDeck.Main
             "Assets/ParaketAssets",
         };
 
+        private static string GetPackageName()
+        {
+            return $"{ProductInfoUtility.GetDeveloperLinkTitle().Replace(" ", "-")}-{ProductInfoUtility.GetVersion()}.unitypackage";
+        }
+
         [MenuItem("VitDeck/Export VitDeck", false, 201)]
         private static void Export()
         {
+            ToolExporter.SaveReleaseInfo();
             AssetDatabase.ExportPackage(
-                AssetDatabase.GetAllAssetPaths().Where(path => path == ToolExporter.RootPath
-                    || path.StartsWith(ToolExporter.RootPath + "/") && !ToolExporter.IgnorePattern.IsMatch(path)
+                AssetDatabase.GetAllAssetPaths().Where(path => path == JsonReleaseInfo.VitDeckRootPath
+                    || path.StartsWith(JsonReleaseInfo.VitDeckRootPath + "/") && !ToolExporter.IgnorePattern.IsMatch(path)
                     || ToolExporter.OtherResourceRootPaths.Any(otherResourceRootPath => path.StartsWith(otherResourceRootPath)))
                     .ToArray(),
-                Path.Combine(
-                    ToolExporter.DestinationFolderPath,
-                    $"{ProductInfoUtility.GetDeveloperLinkTitle()}-{ProductInfoUtility.GetVersion()}.unitypackage"
-                )
+                Path.Combine(ToolExporter.DestinationFolderPath, ToolExporter.GetPackageName())
             );
+        }
+
+        private static void SaveReleaseInfo()
+        {
+            File.WriteAllText(Path.Combine(
+                Path.GetDirectoryName(Application.dataPath),
+                JsonReleaseInfo.VitDeckRootPath,
+                JsonReleaseInfo.JsonReleaseInfoPath
+            ), JsonUtility.ToJson(new JsonReleaseInfo.ReleaseInfo()
+            {
+                version = ProductInfoUtility.GetVersion(),
+                package_name = ProductInfoUtility.GetDeveloperLinkTitle(),
+                download_url = $"{ProductInfoUtility.GetDeveloperLinkURL()}/releases/download/v{ProductInfoUtility.GetVersion()}/{ToolExporter.GetPackageName()}",
+            }, true));
+            AssetDatabase.Refresh();
         }
     }
 }
