@@ -62,7 +62,7 @@ namespace VitDeck.Validator
                 //Blacklist
                 new AssetGuidBlacklistRule(LocalizedMessage.Get("VketRuleSetBase.OfficialAssetDontContainRule.Title"), VketOfficialAssetData.GUIDs),
                 // B-3 命名規則
-                new AssetNamingRule(LocalizedMessage.Get("VketRuleSetBase.NameOfFileAndFolderRule.Title"), @"[a-zA-Z0-9 _\.\-\(\)]+"),
+                new AssetNamingRule(LocalizedMessage.Get("VketRuleSetBase.NameOfFileAndFolderRule.Title"), @"[a-zA-Z0-9 _.()-]+"),
                 //Vket B-3 パスの長さ制限
                 new AssetPathLengthRule(LocalizedMessage.Get("VketRuleSetBase.FilePathLengthLimitRule.Title", 184), 184),
                 // B-4a 拡張子制限
