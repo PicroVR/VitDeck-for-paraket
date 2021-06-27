@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
@@ -29,12 +30,18 @@ namespace VitDeck.Main
             |Config/(UserSettings|DefaultExportSetting.*|PlacementSettings|Vket.+)\.asset
         )$", RegexOptions.ExplicitCapture | RegexOptions.IgnorePatternWhitespace);
 
+        private static readonly IEnumerable<string> OtherResourceRootPaths = new[]
+        {
+            "Assets/ParaketAssets",
+        };
+
         [MenuItem("VitDeck/Export VitDeck", false, 201)]
         private static void Export()
         {
             AssetDatabase.ExportPackage(
                 AssetDatabase.GetAllAssetPaths().Where(path => path == ToolExporter.RootPath
-                    || path.StartsWith(ToolExporter.RootPath + "/") && !ToolExporter.IgnorePattern.IsMatch(path))
+                    || path.StartsWith(ToolExporter.RootPath + "/") && !ToolExporter.IgnorePattern.IsMatch(path)
+                    || ToolExporter.OtherResourceRootPaths.Any(otherResourceRootPath => path.StartsWith(otherResourceRootPath)))
                     .ToArray(),
                 Path.Combine(
                     ToolExporter.DestinationFolderPath,
