@@ -232,14 +232,14 @@ namespace VitDeck.Validator
                     VRC_EventHandler.VrcEventType.SetParticlePlaying,
                     VRC_EventHandler.VrcEventType.SetComponentActive,
                     VRC_EventHandler.VrcEventType.SetGameObjectActive,
-                    //VRC_EventHandler.VrcEventType.AnimationBool,
-                    //VRC_EventHandler.VrcEventType.AnimationFloat,
-                    //VRC_EventHandler.VrcEventType.AnimationInt,
-                    //VRC_EventHandler.VrcEventType.AnimationIntAdd,
-                    //VRC_EventHandler.VrcEventType.AnimationIntDivide,
-                    //VRC_EventHandler.VrcEventType.AnimationIntMultiply,
-                    //VRC_EventHandler.VrcEventType.AnimationIntSubtract,
-                    //VRC_EventHandler.VrcEventType.AnimationTrigger
+                    VRC_EventHandler.VrcEventType.AnimationBool,
+                    VRC_EventHandler.VrcEventType.AnimationFloat,
+                    VRC_EventHandler.VrcEventType.AnimationInt,
+                    VRC_EventHandler.VrcEventType.AnimationIntAdd,
+                    VRC_EventHandler.VrcEventType.AnimationIntDivide,
+                    VRC_EventHandler.VrcEventType.AnimationIntMultiply,
+                    VRC_EventHandler.VrcEventType.AnimationIntSubtract,
+                    VRC_EventHandler.VrcEventType.AnimationTrigger
                 };
             }
         }
