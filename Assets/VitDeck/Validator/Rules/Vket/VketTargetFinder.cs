@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VitDeck.Language;
+using VitDeck.Main;
 using Object = UnityEngine.Object;
 
 namespace VitDeck.Validator
@@ -34,7 +33,7 @@ namespace VitDeck.Validator
 
             var exhibitorID = Path.GetFileName(baseFolder);
 
-            var targetScene = OpenPackageScene(exhibitorID);
+            var targetScene = GUIUtilities.OpenPackageScene(exhibitorID);
 
             scenes = new Scene[] { targetScene };
             var exhibitRootObject = GetExhibitRootObject(exhibitorID, targetScene);
@@ -103,45 +102,6 @@ namespace VitDeck.Validator
                     ));
 
             return referenceChain.Result;
-        }
-
-        private static Scene OpenPackageScene(string exhibitorID)
-        {
-            var scenePath = string.Format("Assets/{0}/{0}.unity", exhibitorID);
-            Debug.Log(scenePath);
-            if (!File.Exists(scenePath))
-            {
-                throw new FatalValidationErrorException(LocalizedMessage.Get("VketTargetFinder.SceneNotFound", scenePath));
-            }
-            var targetScene = EditorSceneManager.GetSceneByPath(scenePath);
-            Debug.Log(targetScene.name);
-
-            if (!targetScene.isLoaded)
-            {
-                if (!EditorUtility.DisplayDialog(
-                    LocalizedMessage.Get("VketTargetFinder.SceneOpenDialog.Title"),
-                    LocalizedMessage.Get("VketTargetFinder.SceneOpenDialog") + Environment.NewLine + targetScene.path,
-                    LocalizedMessage.Get("VketTargetFinder.SceneOpenDialog.Continue"),
-                    LocalizedMessage.Get("VketTargetFinder.SceneOpenDialog.Abort")))
-                {
-                    throw new FatalValidationErrorException(LocalizedMessage.Get("VketTargetFinder.ValidationAborted"));
-                }
-
-                DoSaveIfNecessary();
-
-                targetScene = EditorSceneManager.OpenScene(scenePath);
-                EditorSceneManager.SetActiveScene(targetScene);
-            }
-
-            return targetScene;
-        }
-
-        private static void DoSaveIfNecessary()
-        {
-            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            {
-                throw new FatalValidationErrorException(LocalizedMessage.Get("VketTargetFinder.UserDidntSave"));
-            }
         }
 
 
