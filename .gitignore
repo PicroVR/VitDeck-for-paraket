@@ -64,3 +64,6 @@ Assets/VRChat Examples*
 # Destination folder for exporter
 /Assets/Exports*
 /Assets/Vket_Exports*
+
+# Build Size Inspector
+/Assets/BuildReports*
