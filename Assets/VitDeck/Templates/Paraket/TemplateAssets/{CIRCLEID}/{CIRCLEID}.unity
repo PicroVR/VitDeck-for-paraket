@@ -5222,7 +5222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 953944907}
   m_Layer: 0
-  m_Name: Template
+  m_Name: Reference Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
