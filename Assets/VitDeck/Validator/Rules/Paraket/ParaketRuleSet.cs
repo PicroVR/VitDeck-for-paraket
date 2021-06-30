@@ -125,6 +125,7 @@ namespace VitDeck.Validator
                     LightType.Point,
                     new LightConfigRule.LightConfig(
                         new[] { LightmapBakeType.Baked },
+                        new[] { LightShadows.Hard, LightShadows.Soft },
                         0, 7,
                         0, 10,
                         0, 15
@@ -136,6 +137,7 @@ namespace VitDeck.Validator
                     LightType.Spot,
                     new LightConfigRule.LightConfig(
                         new[] { LightmapBakeType.Baked },
+                        new[] { LightShadows.Hard, LightShadows.Soft },
                         0, 7,
                         0, 10,
                         0, 15
@@ -146,6 +148,7 @@ namespace VitDeck.Validator
                     LocalizedMessage.Get("VketRuleSetBase.AreaLightConfigRule.Title"),
                     LightType.Area, new LightConfigRule.LightConfig(
                         new[] { LightmapBakeType.Baked },
+                        null,
                         0, 30,
                         0, 10,
                         0, 15
