@@ -1248,6 +1248,11 @@ namespace VitDeck.Validator
             "c21fdaf2c6687f544b34ee847fcc7cdc", // Assets/ParaketAssets/Prefabs/PickupObjectSync/Animations/PickupAnimation.fbx
             "c38556d80f09fff4d9941877e40e862c", // Assets/ParaketAssets/Prefabs/PickupObjectSync/Animations/Press-Vket.anim
             "76d626a7ca5e88343b37af2593d78ca0", // Assets/ParaketAssets/Prefabs/PickupObjectSync/Animations/ResetPosition.controller
+            "45a62f3867ce63a49b4c6826f8951554", // Assets/ParaketAssets/Prefabs/SwitchLanguage
+            "f71c96810f0b5b142b8396710e46e42b", // Assets/ParaketAssets/Prefabs/SwitchLanguage/SwitchLanguage.prefab
+            "85534e65bb042a643b9ff8e26325ab72", // Assets/ParaketAssets/Prefabs/SwitchLanguage/Textures
+            "7f697f0a5403d864a9240a9f0d1e83e4", // Assets/ParaketAssets/Prefabs/SwitchLanguage/Textures/SwitchToEnglish.png
+            "1e87d7c02aa11184aab67f6998f6a03b", // Assets/ParaketAssets/Prefabs/SwitchLanguage/Textures/SwitchToJapanese.png
             #endregion
             #region Dynamic Bone
             "e6ba56ede2604dd4082ed2d0b4f435dd", // Assets/DynamicBone
