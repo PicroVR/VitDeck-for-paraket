@@ -20,6 +20,7 @@ MonoBehaviour:
   fileNameFormat: Paraket_{ID}_{DATETIME}.unitypackage
   ruleSetName: ParaketRuleSet
   ignoreValidationWarning: 1
+  AllowForceExport: 0
   MaxBuildByteCount: 10485760
   AllowedExtensions: '.anim
 
