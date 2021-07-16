@@ -190,6 +190,7 @@ namespace VitDeck.Validator
             "fc23a67d2a767b641a6ada27685496ae", // Assets/VitDeck/PerformanceCalculator/Wizard.cs
             "7157a0221c7a9224b93d3d08a2637071", // Assets/VitDeck/Placement
             "8c0aa2970575d2748932c00f2682bcb3", // Assets/VitDeck/Placement/PackageImporter.cs
+            "da89d8904864cef4a912358ad8e0ed3c", // Assets/VitDeck/Placement/PerformanceCalculatorWizard.cs
             "a8b51ece47d3d714786e4edbf711164b", // Assets/VitDeck/Placement/Placement.cs
             "c31d7e6aa8fc4f14fb44d698a0247b49", // Assets/VitDeck/Placement/PlacementSettings.cs
             "68ddd9f9938ef4f478ced637da479925", // Assets/VitDeck/Placement/PlacementWizard.cs
@@ -366,9 +367,15 @@ namespace VitDeck.Validator
             "a8a3b6b3b3cc4ba48933236c5be92e63", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/BoothTemplate
             "254334caffc0f4b45b12bc9aecb0d6e7", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/BoothTemplate/ArealGarden_Template.fbx
             "6ad23e3e4cd4d454083689964a4fbbbf", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/Material
+            "360aef97415469547a9f2759fa6c1ebf", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/Material/Base_Ground.mat
+            "2e29a124adf23c546833589b3ef4b373", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/Material/Frame.mat
+            "f1e1a68ed83bf134593adcd8d164c01d", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/Material/Garden_Frame.mat
             "f9e4309dc270cb44abb3dc842792212e", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/Material/M_Emit_Yellow.mat
             "ed430a3ff3d5b8141add7489c9856c1a", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/Material/M_Flat_Gray.mat
+            "c088d5cde395f3f4cbc907cb319760a9", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/Material/Roof.mat
             "ee5aca6f67462084a8d2bc404db35a4f", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/Material/Skybox.mat
+            "9e877a2039199154fa99cfe08cfd1afd", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/Material/Wall.mat
+            "2a9bf2890a07ba747856bb03dff88bb1", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/Material/WindowLit_House_Normal.mat
             "a0fd554ead96c1b48810de4d18577194", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/Material/Base_Ground
             "11c51bff8e1cf26479454d32fabf9da9", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/Material/Base_Ground/1K-sidewalk road-ao.jpg
             "0ad02f63cf9c96b4583f62e2b74df999", // Assets/VitDeck/Templates/Paraket/SharedAssets/Resource/Material/Base_Ground/1K-sidewalk road-diffuse.jpg
@@ -548,6 +555,7 @@ namespace VitDeck.Validator
             "1666752c5442c4b45bf640eaeabdc581", // Assets/VitDeck/Validator/Rules/Component/ProjectorComponentMaxCountRule.cs
             "d2b8ec6aeff404948942303c4783db66", // Assets/VitDeck/Validator/Rules/Component/ProjectorComponentRule.cs
             "0a0ecebe6f64fa7499bf3ba4d58d02cc", // Assets/VitDeck/Validator/Rules/Component/ReflectionProbeRule.cs
+            "d18c2a639c4a1a24586a9c912671c490", // Assets/VitDeck/Validator/Rules/Component/RendererRule.cs
             "2beefec2b283b1146983dbbb7da37ccf", // Assets/VitDeck/Validator/Rules/Component/RigidbodyRule.cs
             "cac76c129e0448b428d23a6bb81aa967", // Assets/VitDeck/Validator/Rules/Component/SkinnedMeshRendererRule.cs
             "acf31a000d7db1f48a61275e3f8c8607", // Assets/VitDeck/Validator/Rules/Component/UsableComponentListRule.cs
