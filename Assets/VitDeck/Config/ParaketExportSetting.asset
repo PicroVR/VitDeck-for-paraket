@@ -48,6 +48,8 @@ MonoBehaviour:
 
     .mat
 
+    .md
+
     .meta
 
     .mp3
@@ -85,6 +87,8 @@ MonoBehaviour:
     .tiff
 
     .ttf
+
+    .txt
 
     .unity
 
