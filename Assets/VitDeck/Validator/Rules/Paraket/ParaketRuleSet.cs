@@ -70,6 +70,7 @@ namespace VitDeck.Validator
                 ),
                 // B-5 MaterialとTextureの検証
                 new ContainMatOrTexInAssetRule(LocalizedMessage.Get("VketRuleSetBase.ContainMatOrTexInAssetRule.Title")),
+                new EmbeddedMaterialsRule("モデルのMaterials設定で「Use Embedded Materials」を使う"),
                 
                 ////////////////////////////////////////////////////////////////
                 ////                      C.ブース形状                      ////
